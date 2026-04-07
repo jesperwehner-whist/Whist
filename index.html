@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+
+<html lang="da">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="Whist"/>
+  <title>Whist Kortaften</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#f5f0e8;font-family:'Lato',sans-serif;}
+    .btn{cursor:pointer;border:none;border-radius:10px;padding:12px 20px;font-size:15px;font-weight:700;font-family:'Lato',sans-serif;transition:opacity .15s;}
+    .btn:active{opacity:.75;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <div id="err" style="display:none;padding:30px 20px;background:#fff;color:#333;font-size:15px;font-family:sans-serif;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999;text-align:center;padding-top:80px">
+    <p style="font-size:22px;font-weight:bold;margin-bottom:16px">Indl\u00e6ser...</p>
+    <p style="color:#999;font-size:13px" id="err-detail"></p>
+  </div>
+  <script>
+    window.xlsxLoaded = false;
+    window.onerror = function(m,s,l,c,e) {
+      var b = document.getElementById('err');
+      b.style.display = 'block';
+      b.querySelector('p').textContent = '\u26a0\ufe0f Fejl';
+      document.getElementById('err-detail').textContent = m + ' (linje ' + l + ')';
+    };
+  </script>
+  <!-- React inlined -->
+  <script>
+(function(){'use strict';(function(c,x){"object"===typeof exports&&"undefined"!==typeof module?x(exports):"function"===typeof define&&define.amd?define(["exports"],x):(c=c||self,x(c.React={}))})(this,function(c){function x(a){if(null===a||"object"!==typeof a)return null;a=V&&a[V]||a["@@iterator"];return"function"===typeof a?a:null}function w(a,b,e){this.props=a;this.context=b;this.refs=W;this.updater=e||X}function Y(){}function K(a,b,e){this.props=a;this.context=b;this.refs=W;this.updater=e||X}function Z(a,b,e){var m,d={},c=null,h=null;if(null!=b)for(m in void 0!==b.ref&&(h=b.ref),void 0!==b.key&&(c=""+b.key),b)aa.call(b,m)&&!ba.hasOwnProperty(m)&&(d[m]=b[m]);var l=arguments.length-2;if(1===l)d.children=e;else if(1<l){for(var f=Array(l),k=0;k<l;k++)f[k]=arguments[k+2];d.children=f}if(a&&a.defaultProps)for(m in l=a.defaultProps,l)void 0===d[m]&&(d[m]=l[m]);return{$$typeof:y,type:a,key:c,ref:h,props:d,_owner:L.current}}function na(a,b){return{$$typeof:y,type:a.type,key:b,ref:a.ref,props:a.props,_owner:a._owner}}function M(a){return"object"===typeof a&&null!==a&&a.$$typeof===y}function oa(a){var b={"=":"=0",":":"=2"};return"$"+a.replace(/[=:]/g,function(a){return b[a]})}function N(a,b){return"object"===typeof a&&null!==a&&null!=a.key?oa(""+a.key):b.toString(36)}function B(a,b,e,m,d){var c=typeof a;if("undefined"===c||"boolean"===c)a=null;var h=!1;if(null===a)h=!0;else switch(c){case "string":case "number":h=!0;break;case "object":switch(a.$$typeof){case y:case pa:h=!0}}if(h)return h=a,d=d(h),a=""===m?"."+N(h,0):m,ca(d)?(e="",null!=a&&(e=a.replace(da,"$&/")+"/"),B(d,b,e,"",function(a){return a})):null!=d&&(M(d)&&(d=na(d,e+(!d.key||h&&h.key===d.key?"":(""+d.key).replace(da,"$&/")+"/")+a)),b.push(d)),1;h=0;m=""===m?".":m+":";if(ca(a))for(var l=0;l<a.length;l++){c=a[l];var f=m+N(c,l);h+=B(c,b,e,f,d)}else if(f=x(a),"function"===typeof f)for(a=f.call(a),l=0;!(c=a.next()).done;)c=c.value,f=m+N(c,l++),h+=B(c,b,e,f,d);else if("object"===c)throw b=String(a),Error("Objects are not valid as a React child (found: "+("[object Object]"===b?"object with keys {"+Object.keys(a).join(", ")+"}":b)+"). If you meant to render a collection of children, use an array instead.");return h}function C(a,b,e){if(null==a)return a;var c=[],d=0;B(a,c,"","",function(a){return b.call(e,a,d++)});return c}function qa(a){if(-1===a._status){var b=a._result;b=b();b.then(function(b){if(0===a._status||-1===a._status)a._status=1,a._result=b},function(b){if(0===a._status||-1===a._status)a._status=2,a._result=b});-1===a._status&&(a._status=0,a._result=b)}if(1===a._status)return a._result.default;throw a._result;}var y=Symbol.for("react.element"),pa=Symbol.for("react.portal"),ra=Symbol.for("react.fragment"),sa=Symbol.for("react.strict_mode"),ta=Symbol.for("react.profiler"),ua=Symbol.for("react.provider"),va=Symbol.for("react.context"),wa=Symbol.for("react.forward_ref"),xa=Symbol.for("react.suspense"),ya=Symbol.for("react.memo"),za=Symbol.for("react.lazy"),V=Symbol.iterator,X={isMounted:function(a){return!1},enqueueForceUpdate:function(a,b,c){},enqueueReplaceState:function(a,b,c,m){},enqueueSetState:function(a,b,c,m){}},ka=Object.assign,W={};w.prototype.isReactComponent={};w.prototype.setState=function(a,b){if("object"!==typeof a&&"function"!==typeof a&&null!=a)throw Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");this.updater.enqueueSetState(this,a,b,"setState")};w.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};Y.prototype=w.prototype;var t=K.prototype=new Y;t.constructor=K;ka(t,w.prototype);t.isPureReactComponent=!0;var ca=Array.isArray,aa=Object.prototype.hasOwnProperty,L={current:null},ba={key:!0,ref:!0,__self:!0,__source:!0},da=/\/+/g,g={current:null},J={transition:null};if("object"===typeof performance&&"function"===typeof performance.now){var Aa=performance;var v=function(){return Aa.now()}}else{var la=Date,Ba=la.now();v=function(){return la.now()-Ba}}var q=[],r=[],Ca=1,n=null,k=3,F=!1,u=!1,z=!1,ja="function"===typeof setTimeout?setTimeout:null,ea="function"===typeof clearTimeout?clearTimeout:null,ma="undefined"!==typeof setImmediate?setImmediate:null;var H=!1,G=null,A=-1,ia=5,ha=-1,U=function(){if(null!==G){var a=v();ha=a;var b=!0;try{b=G(!0,a)}finally{b?I():(H=!1,G=null)}}else H=!1};if("function"===typeof ma)var I=function(){ma(U)};else if("undefined"!==typeof MessageChannel){t=new MessageChannel;var Da=t.port2;t.port1.onmessage=U;I=function(){Da.postMessage(null)}}else I=function(){ja(U,0)};t={ReactCurrentDispatcher:g,ReactCurrentOwner:L,ReactCurrentBatchConfig:J,Scheduler:{__proto__:null,unstable_ImmediatePriority:1,unstable_UserBlockingPriority:2,unstable_NormalPriority:3,unstable_IdlePriority:5,unstable_LowPriority:4,unstable_runWithPriority:function(a,b){switch(a){case 1:case 2:case 3:case 4:case 5:break;default:a=3}var c=k;k=a;try{return b()}finally{k=c}},unstable_next:function(a){switch(k){case 1:case 2:case 3:var b=3;break;default:b=k}var c=k;k=b;try{return a()}finally{k=c}},unstable_scheduleCallback:function(a,b,c){var e=v();"object"===typeof c&&null!==c?(c=c.delay,c="number"===typeof c&&0<c?e+c:e):c=e;switch(a){case 1:var d=-1;break;case 2:d=250;break;case 5:d=1073741823;break;case 4:d=1E4;break;default:d=5E3}d=c+d;a={id:Ca++,callback:b,priorityLevel:a,startTime:c,expirationTime:d,sortIndex:-1};c>e?(a.sortIndex=c,O(r,a),null===p(q)&&a===p(r)&&(z?(ea(A),A=-1):z=!0,T(Q,c-e))):(a.sortIndex=d,O(q,a),u||F||(u=!0,R(S)));return a},unstable_cancelCallback:function(a){a.callback=null},unstable_wrapCallback:function(a){var b=k;return function(){var c=k;k=b;try{return a.apply(this,arguments)}finally{k=c}}},unstable_getCurrentPriorityLevel:function(){return k},unstable_shouldYield:fa,unstable_requestPaint:function(){},unstable_continueExecution:function(){u||F||(u=!0,R(S))},unstable_pauseExecution:function(){},unstable_getFirstCallbackNode:function(){return p(q)},get unstable_now(){return v},unstable_forceFrameRate:function(a){0>a||125<a?console.error("forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported"):ia=0<a?Math.floor(1E3/a):5},unstable_Profiling:null}};c.Children={map:C,forEach:function(a,b,c){C(a,function(){b.apply(this,arguments)},c)},count:function(a){var b=0;C(a,function(){b++});return b},toArray:function(a){return C(a,function(a){return a})||[]},only:function(a){if(!M(a))throw Error("React.Children.only expected to receive a single React element child.");return a}};c.Component=w;c.Fragment=ra;c.Profiler=ta;c.PureComponent=K;c.StrictMode=sa;c.Suspense=xa;c.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED=t;c.cloneElement=function(a,b,c){if(null===a||void 0===a)throw Error("React.cloneElement(...): The argument must be a React element, but you passed "+a+".");var e=ka({},a.props),d=a.key,k=a.ref,h=a._owner;if(null!=b){void 0!==b.ref&&(k=b.ref,h=L.current);void 0!==b.key&&(d=""+b.key);if(a.type&&a.type.defaultProps)var l=a.type.defaultProps;for(f in b)aa.call(b,f)&&!ba.hasOwnProperty(f)&&(e[f]=void 0===b[f]&&void 0!==l?l[f]:b[f])}var f=arguments.length-2;if(1===f)e.children=c;else if(1<f){l=Array(f);for(var g=0;g<f;g++)l[g]=arguments[g+2];e.children=l}return{$$typeof:y,type:a.type,key:d,ref:k,props:e,_owner:h}};c.createContext=function(a){a={$$typeof:va,_currentValue:a,_currentValue2:a,_threadCount:0,Provider:null,Consumer:null,_defaultValue:null,_globalName:null};a.Provider={$$typeof:ua,_context:a};return a.Consumer=a};c.createElement=Z;c.createFactory=function(a){var b=Z.bind(null,a);b.type=a;return b};c.createRef=function(){return{current:null}};c.forwardRef=function(a){return{$$typeof:wa,render:a}};c.isValidElement=M;c.lazy=function(a){return{$$typeof:za,_payload:{_status:-1,_result:a},_init:qa}};c.memo=function(a,b){return{$$typeof:ya,type:a,compare:void 0===b?null:b}};c.startTransition=function(a,b){b=J.transition;J.transition={};try{a()}finally{J.transition=b}};c.unstable_act=function(a){throw Error("act(...) is not supported in production builds of React.");};c.useCallback=function(a,b){return g.current.useCallback(a,b)};c.useContext=function(a){return g.current.useContext(a)};c.useDebugValue=function(a,b){};c.useDeferredValue=function(a){return g.current.useDeferredValue(a)};c.useEffect=function(a,b){return g.current.useEffect(a,b)};c.useId=function(){return g.current.useId()};c.useImperativeHandle=function(a,b,c){return g.current.useImperativeHandle(a,b,c)};c.useInsertionEffect=function(a,b){return g.current.useInsertionEffect(a,b)};c.useLayoutEffect=function(a,b){return g.current.useLayoutEffect(a,b)};c.useMemo=function(a,b){return g.current.useMemo(a,b)};c.useReducer=function(a,b,c){return g.current.useReducer(a,b,c)};c.useRef=function(a){return g.current.useRef(a)};c.useState=function(a){return g.current.useState(a)};c.useSyncExternalStore=function(a,b,c){return g.current.useSyncExternalStore(a,b,c)};c.useTransition=function(){return g.current.useTransition()};c.version="18.2.0"});})();
+  </script>
+  <!-- ReactDOM from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script>
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+const PLAYERS = ["Peter", "Bj\xF8rn", "Kirk", "Wehner"];
+const STORAGE_KEY = "whist-sessions-v3";
+const GAME_TYPES = [
+  { id: "almindelig", label: "Almindelig", emoji: "\u{1F0CF}", hasPartner: true, hasTrump: true, solType: false, description: "Melder v\xE6lger trumf, spiller med makker" },
+  { id: "gode", label: "Gode", emoji: "\u2663", hasPartner: true, hasTrump: false, solType: false, description: "Trumf er altid kl\xF8r, spiller med makker" },
+  { id: "halve", label: "Halve", emoji: "\xBD", hasPartner: true, hasTrump: true, solType: false, description: "Makker v\xE6lger trumf" },
+  { id: "sol", label: "Sol", emoji: "\u{1F324}", hasPartner: false, hasTrump: false, solType: true, description: "Maks \xE9t stik tilladt" },
+  { id: "rensol", label: "Ren Sol", emoji: "\u2600", hasPartner: false, hasTrump: false, solType: true, description: "Nul stik tilladt" },
+  { id: "bord", label: "Bordopl\xE6gger", emoji: "\u{1F4CB}", hasPartner: false, hasTrump: false, solType: true, description: "Nul stik, kort \xE5bne p\xE5 bordet" }
+];
+const SUITS = ["\u2663", "\u2666", "\u2665", "\u2660"];
+const SUIT_LABEL = { "\u2663": "Kl\xF8r", "\u2666": "Ruder", "\u2665": "Hjerter", "\u2660": "Spar" };
+const SUIT_COLOR = { "\u2663": "#1a3a1a", "\u2666": "#8b0000", "\u2665": "#8b0000", "\u2660": "#1a1a2e" };
+const BASE = {
+  almindelig: { 8: 40, 9: 60, 10: 80, 11: 120, 12: 180, 13: 240 },
+  gode: { 8: 60, 9: 80, 10: 120, 11: 180, 12: 240, 13: 360 },
+  halveGode: { 8: 80, 9: 120, 10: 180, 11: 240, 12: 360, 13: 420 }
+};
+BASE.halve = BASE.gode;
+const OVER = { almindelig: 5, gode: 10, halveGode: 20 };
+OVER.halve = OVER.gode;
+const UNDER = { almindelig: -10, gode: -20, halveGode: -40 };
+UNDER.halve = UNDER.gode;
+const SOL_PTS = {
+  sol: { win1: 180, win2: 120, lose1: -180, lose2: -180 },
+  rensol: { win1: 240, win2: 180, lose1: -240, lose2: -240 },
+  bord: { win1: 360, win2: 240, lose1: -360, lose2: -360 }
+};
+const SOL_OPP = {
+  sol: { win1: -60, win2: -120, lose1: 60, lose2: 120 },
+  rensol: { win1: -80, win2: -180, lose1: 80, lose2: 180 },
+  bord: { win1: -120, win2: -240, lose1: 120, lose2: 240 }
+};
+function roundUp10(n) {
+  return Math.ceil(n / 10) * 10;
+}
+function variantKey(round) {
+  if (round.gameType === "halve") return round.trump === "\u2663" ? "halveGode" : "halve";
+  return round.gameType;
+}
+function calcRoundPoints(round) {
+  var _a;
+  const gt = GAME_TYPES.find((g) => g.id === round.gameType);
+  if (!gt || !round.declarer) return null;
+  if (gt.solType) {
+    const coDeclarers = round.coDeclarers || [];
+    const allDec = [round.declarer, ...coDeclarers];
+    const opponents = PLAYERS.filter((p) => !allDec.includes(p));
+    const numDec = allDec.length;
+    const tbl = SOL_PTS[round.gameType];
+    const oppTbl = SOL_OPP[round.gameType];
+    if (!tbl) return null;
+    const maxAllowed = round.gameType === "sol" ? 1 : 0;
+    const solTaken = round.solTaken || {};
+    const pts2 = {};
+    PLAYERS.forEach((p) => pts2[p] = 0);
+    if (numDec === 1) {
+      const taken2 = solTaken[round.declarer];
+      if (taken2 === void 0 || taken2 === "") return null;
+      const ok = Number(taken2) <= maxAllowed;
+      pts2[round.declarer] = ok ? tbl.win1 : tbl.lose1;
+      opponents.forEach((p) => pts2[p] = ok ? oppTbl.win1 : oppTbl.lose1);
+    } else {
+      allDec.forEach((dec) => {
+        const taken2 = solTaken[dec];
+        if (taken2 === void 0 || taken2 === "") return;
+        pts2[dec] = Number(taken2) <= maxAllowed ? tbl.win2 : tbl.lose2;
+      });
+      const results = allDec.map((dec) => {
+        const t = solTaken[dec];
+        return t === void 0 || t === "" ? null : Number(t) <= maxAllowed;
+      });
+      if (results.every((r) => r === true)) opponents.forEach((p) => pts2[p] = oppTbl.win2);
+      else if (results.every((r) => r === false)) opponents.forEach((p) => pts2[p] = oppTbl.lose2);
+      else opponents.forEach((p) => pts2[p] = 0);
+    }
+    return pts2;
+  }
+  const bid = parseInt(round.bid);
+  const taken = parseInt(round.taken);
+  if (isNaN(bid) || isNaN(taken) || bid < 8 || bid > 13) return null;
+  const key = variantKey(round);
+  const base = (_a = BASE[key]) == null ? void 0 : _a[bid];
+  if (base === void 0) return null;
+  const diff = taken - bid;
+  let decPts;
+  if (diff >= 0) {
+    const extra = diff > 0 ? roundUp10(diff * OVER[key]) : 0;
+    decPts = base + extra;
+  } else {
+    const short = bid - taken;
+    decPts = -base - short * Math.abs(UNDER[key]);
+  }
+  const pts = {};
+  PLAYERS.forEach((p) => pts[p] = 0);
+  if (round.partner === "selv") {
+    pts[round.declarer] = decPts * 2;
+    PLAYERS.filter((p) => p !== round.declarer).forEach((p) => pts[p] = -decPts);
+  } else if (round.partner) {
+    pts[round.declarer] = decPts;
+    pts[round.partner] = decPts;
+    PLAYERS.filter((p) => p !== round.declarer && p !== round.partner).forEach((p) => pts[p] = -decPts);
+  } else return null;
+  return pts;
+}
+const SUPABASE_URL = "https://oqzgtqxwovagkzprycre.supabase.co";
+const SUPABASE_KEY = "sb_publishable_k5G52_w4_s9DvAYsHwn18Q_Mg-67lVx";
+const DB_ROW_ID = 1;
+async function cloudLoad() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/sessions?id=eq.${DB_ROW_ID}&select=data`, {
+      headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
+    });
+    const rows = await res.json();
+    if (rows && rows.length > 0) return rows[0].data;
+    return [];
+  } catch (e) {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e2) {
+      return [];
+    }
+  }
+}
+async function cloudSave(data) {
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/sessions`, {
+      method: "POST",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": "resolution=merge-duplicates"
+      },
+      body: JSON.stringify({ id: DB_ROW_ID, data, updated_at: (/* @__PURE__ */ new Date()).toISOString() })
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e2) {
+    }
+  }
+}
+const initRound = () => ({
+  id: Date.now() + Math.random(),
+  gameType: null,
+  declarer: null,
+  partner: null,
+  trump: null,
+  bid: "",
+  taken: "",
+  solTaken: {},
+  coDeclarers: [],
+  points: { Peter: "", Bj\u00F8rn: "", Kirk: "", Wehner: "" },
+  autoPoints: true,
+  collapsed: false
+});
+function Modal({ title, message, confirmLabel = "OK", confirmColor = "#b5451b", onConfirm, onCancel }) {
+  return /* @__PURE__ */ React.createElement("div", { style: S.modalOverlay }, /* @__PURE__ */ React.createElement("div", { style: S.modalBox }, /* @__PURE__ */ React.createElement("h3", { style: S.modalTitle }, title), /* @__PURE__ */ React.createElement("p", { style: S.modalMsg }, message), /* @__PURE__ */ React.createElement("div", { style: S.modalBtns }, /* @__PURE__ */ React.createElement("button", { style: S.modalCancel, onClick: onCancel }, "Annuller"), /* @__PURE__ */ React.createElement("button", { style: __spreadProps(__spreadValues({}, S.modalConfirm), { background: confirmColor }), onClick: onConfirm }, confirmLabel))));
+}
+function parseExcelToSessions(workbook) {
+  const sheetName = workbook.SheetNames.find((n) => /result|whist|aften|data/i.test(n)) || workbook.SheetNames[0];
+  const ws = workbook.Sheets[sheetName];
+  const rows = []; // XLSX not available
+  if (!rows.length) return [];
+  const colMap = {};
+  const sample = rows[0];
+  Object.keys(sample).forEach((k) => {
+    const kl = k.toLowerCase().trim();
+    PLAYERS.forEach((p) => {
+      if (kl === p.toLowerCase() || kl.includes(p.toLowerCase())) colMap[p] = k;
+    });
+  });
+  const dateCol = Object.keys(sample).find((k) => /dato|date|dag|aften/i.test(k));
+  const sessions = [];
+  rows.forEach((row, ri) => {
+    const hasPoints = PLAYERS.some((p) => colMap[p] && row[colMap[p]] !== "" && !isNaN(Number(row[colMap[p]])));
+    if (!hasPoints) return;
+    let dateStr = dateCol ? String(row[dateCol]).trim() : "";
+    if (!dateStr || dateStr === "0") dateStr = `Importeret r\xE6kke ${ri + 1}`;
+    const points = {};
+    PLAYERS.forEach((p) => {
+      const raw = colMap[p] ? row[colMap[p]] : "";
+      points[p] = raw !== "" && !isNaN(Number(raw)) ? String(Number(raw)) : "";
+    });
+    sessions.push({
+      id: Date.now() + ri + Math.random(),
+      date: dateStr,
+      finished: true,
+      imported: true,
+      rounds: [__spreadProps(__spreadValues({}, initRound()), { id: Date.now() + ri + 0.5, gameType: "almindelig", points, autoPoints: false })]
+    });
+  });
+  return sessions;
+}
+function calcSessionStats(rounds, roundPtsFn) {
+  const typeCounts = {};
+  GAME_TYPES.forEach((g) => typeCounts[g.id] = 0);
+  const declarerCounts = {};
+  PLAYERS.forEach((p) => declarerCounts[p] = 0);
+  const declarerWins = {};
+  PLAYERS.forEach((p) => declarerWins[p] = 0);
+  let totalRounds = 0;
+  rounds.forEach((r) => {
+    if (!r.gameType || !r.declarer) return;
+    typeCounts[r.gameType] = (typeCounts[r.gameType] || 0) + 1;
+    declarerCounts[r.declarer] = (declarerCounts[r.declarer] || 0) + 1;
+    totalRounds++;
+    const pts = roundPtsFn(r);
+    if (pts && pts[r.declarer] > 0) declarerWins[r.declarer]++;
+  });
+  return { typeCounts, declarerCounts, declarerWins, totalRounds };
+}
+function NewSessionModal({ info, onChange, onConfirm, onCancel }) {
+  return /* @__PURE__ */ React.createElement("div", { style: S.modalOverlay }, /* @__PURE__ */ React.createElement("div", { style: S.modalBox }, /* @__PURE__ */ React.createElement("h3", { style: S.modalTitle }, "Start ny kortaften"), /* @__PURE__ */ React.createElement("p", { style: S.modalMsg }, "Angiv s\xE6son og aftensnummer."), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "16px", marginBottom: "24px" } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement("label", { style: { fontSize: "11px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: "#aaa", display: "block", marginBottom: "6px" } }, "S\xE6son"), /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "number",
+      min: "1",
+      value: info.season,
+      onChange: (e) => onChange(__spreadProps(__spreadValues({}, info), { season: e.target.value })),
+      style: { width: "100%", border: "1px solid #ddd", borderRadius: "8px", padding: "10px 12px", fontSize: "20px", fontFamily: "'Playfair Display',serif", fontWeight: 700, textAlign: "center", boxSizing: "border-box" }
+    }
+  )), /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement("label", { style: { fontSize: "11px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: "#aaa", display: "block", marginBottom: "6px" } }, "Aften"), /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "number",
+      min: "1",
+      max: "8",
+      value: info.evening,
+      onChange: (e) => onChange(__spreadProps(__spreadValues({}, info), { evening: e.target.value })),
+      style: { width: "100%", border: "1px solid #ddd", borderRadius: "8px", padding: "10px 12px", fontSize: "20px", fontFamily: "'Playfair Display',serif", fontWeight: 700, textAlign: "center", boxSizing: "border-box" }
+    }
+  ))), /* @__PURE__ */ React.createElement("div", { style: S.modalBtns }, /* @__PURE__ */ React.createElement("button", { style: S.modalCancel, onClick: onCancel }, "Annuller"), /* @__PURE__ */ React.createElement("button", { style: __spreadProps(__spreadValues({}, S.modalConfirm), { background: "#b5451b" }), onClick: onConfirm }, "Start aften"))));
+}
+function App() {
+  const [view, setView] = useState("home");
+  const [sessions, setSessions] = useState([]);
+  const [active, setActive] = useState(null);
+  const [syncing, setSyncing] = useState(false);
+  const [modal, setModal] = useState(null);
+  const [pendingDownload, setPendingDownload] = useState(null);
+  const [showNewSessionModal, setShowNewSessionModal] = useState(false);
+  const [newSessionInfo, setNewSessionInfo] = useState({ season: "1", evening: "1" });
+  const [importStatus, setImportStatus] = useState(null);
+  const [xlsxLoaded, setXlsxLoaded] = useState(false);
+  const fileRef = useRef();
+  useEffect(() => {
+    if (false) { // XLSX removed
+      setXlsxLoaded(true);
+      return;
+    }
+    const s = document.createElement("script");
+    s.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+    s.onload = () => setXlsxLoaded(true);
+    document.head.appendChild(s);
+  }, []);
+  useEffect(() => {
+    setSyncing(true);
+    cloudLoad().then((d) => {
+      setSessions(d || []);
+      setSyncing(false);
+    });
+  }, []);
+  const saveSessions = useCallback((s) => {
+    setSessions(s);
+    setSyncing(true);
+    cloudSave(s).then(() => setSyncing(false));
+  }, []);
+  function startSession() {
+    var _a, _b;
+    const existing = [...sessions].sort((a, b) => {
+      if ((a.season || 0) !== (b.season || 0)) return (b.season || 0) - (a.season || 0);
+      return (b.eveningNum || 0) - (a.eveningNum || 0);
+    });
+    const lastSeason = ((_a = existing[0]) == null ? void 0 : _a.season) || 11;
+    const lastEvening = ((_b = existing[0]) == null ? void 0 : _b.eveningNum) || 0;
+    const nextEvening = lastEvening >= 8 ? 1 : lastEvening + 1;
+    const nextSeason = lastEvening >= 8 ? lastSeason + 1 : lastSeason;
+    setNewSessionInfo({ season: String(nextSeason), evening: String(nextEvening) });
+    setShowNewSessionModal(true);
+  }
+  function confirmStartSession() {
+    const s = parseInt(newSessionInfo.season) || 1;
+    const e = parseInt(newSessionInfo.evening) || 1;
+    const today = (/* @__PURE__ */ new Date()).toLocaleDateString("da-DK", { day: "numeric", month: "long", year: "numeric" });
+    setActive({ id: Date.now(), date: today, season: s, eveningNum: e, rounds: [initRound()] });
+    setShowNewSessionModal(false);
+    setView("session");
+  }
+  function updateRound(idx, patch) {
+    setActive((s) => __spreadProps(__spreadValues({}, s), { rounds: s.rounds.map((r, i) => i === idx ? __spreadValues(__spreadValues({}, r), patch) : r) }));
+  }
+  function addRound() {
+    setActive((s) => __spreadProps(__spreadValues({}, s), { rounds: [...s.rounds, initRound()] }));
+  }
+  function removeRound(idx) {
+    setModal({
+      title: "Slet runde?",
+      message: `Slet runde ${idx + 1}?`,
+      confirmLabel: "Slet",
+      onConfirm: () => {
+        setActive((s) => __spreadProps(__spreadValues({}, s), { rounds: s.rounds.filter((_, i) => i !== idx) }));
+        setModal(null);
+      }
+    });
+  }
+  function collapseRound(idx) {
+    setActive((s) => __spreadProps(__spreadValues({}, s), { rounds: s.rounds.map((r, i) => i === idx ? __spreadProps(__spreadValues({}, r), { collapsed: true }) : r) }));
+  }
+  function exportSessionToExcel(session, allSessions) {
+    // Generate CSV file (works without external libraries)
+    const gameTypeLabel = (r) => {
+      const bid = r.bid || "";
+      const gt = r.gameType || "";
+      const labels = {"almindelig":"Alm","gode":"Gode","halve":"Halve","sol":"Sol","rensol":"Ren Sol","bord":"Oplægger"};
+      const label = labels[gt] || gt;
+      if (gt === "sol" || gt === "rensol" || gt === "bord") return label;
+      if (gt === "halve" && r.trump === "♣") return bid ? `${bid} Halve Gode` : "Halve Gode";
+      return bid ? `${bid} ${label}` : label;
+    };
+    const gåetHjem = (r) => {
+      const pts = r.points || {};
+      const dec = r.declarer;
+      const part = r.partner;
+      if (!dec) return "";
+      const decPts = parseInt(pts[dec]) || 0;
+      if (part && part !== "selv") {
+        const partPts = parseInt(pts[part]) || 0;
+        if (decPts > 0 && partPts > 0) return "Ja";
+        if (decPts <= 0 && partPts <= 0) return "Nej";
+        return "Både Og";
+      }
+      return decPts > 0 ? "Ja" : "Nej";
+    };
+    const allSorted = [...allSessions, {...session, finished: true}].sort((a, b) => {
+      if (a.season && b.season) {
+        if (a.season !== b.season) return a.season - b.season;
+        return a.eveningNum - b.eveningNum;
+      }
+      return a.id - b.id;
+    });
+    const accTotals = {Bjørn: 0, Kirk: 0, Peter: 0, Wehner: 0};
+    let roundNum = 0;
+    const rows = [["Runde","Arena","Dato","Sæson","Aften","Melding","Melder","Makker","Gået Hjem","Bjørn","Kirk","Peter","Wehner","Akk_Bjørn","Akk_Kirk","Akk_Peter","Akk_Wehner"]];
+    for (const sess of allSorted) {
+      for (const r of (sess.rounds || [])) {
+        roundNum++;
+        const pts = {};
+        ["Bjørn","Kirk","Peter","Wehner"].forEach(p => {
+          pts[p] = parseInt(r.points?.[p]) || 0;
+          accTotals[p] += pts[p];
+        });
+        const dato = sess.date && !sess.date.includes("Sæson") ? sess.date : "";
+        rows.push([
+          roundNum, "", dato || "", sess.season || "", sess.eveningNum || "",
+          gameTypeLabel(r), r.declarer || "",
+          r.partner === "selv" ? r.declarer : r.partner || "",
+          gåetHjem(r),
+          pts.Bjørn, pts.Kirk, pts.Peter, pts.Wehner,
+          accTotals.Bjørn, accTotals.Kirk, accTotals.Peter, accTotals.Wehner
+        ]);
+      }
+    }
+    // Build CSV
+    const csv = rows.map(row => row.map(cell => {
+      const s = String(cell ?? "");
+      return s.includes(",") || s.includes('"') || s.includes("\n") ? `"${s.replace(/"/g, '""')}"` : s;
+    }).join(",")).join("\n");
+    // Download as CSV
+    const s = session.season; const e = session.eveningNum;
+    const filename = `Kortaften_${s}_${e}.csv`;
+    const blob = new Blob(["\uFEFF" + csv], {type: "text/csv;charset=utf-8;"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    return {filename, data: null};
+  }
+  function finishSession() {
+    setModal({
+      title: "Afslut kortaften?",
+      message: "Resultaterne gemmes og aftenen afsluttes. Et Excel-ark downloades automatisk.",
+      confirmLabel: "Gem og afslut",
+      confirmColor: "#2c7a4b",
+      onConfirm: () => {
+        const finished = __spreadProps(__spreadValues({}, active), { finished: true });
+        const updated = [finished, ...sessions];
+        saveSessions(updated);
+        const dl = exportSessionToExcel(finished, sessions);
+        if (dl) setPendingDownload(dl);
+        setActive(null);
+        setView("home");
+        setModal(null);
+      }
+    });
+  }
+  function deleteSession(id) {
+    setModal({
+      title: "Slet aften?",
+      message: "Slettes permanent.",
+      confirmLabel: "Slet",
+      onConfirm: () => {
+        saveSessions(sessions.filter((s) => s.id !== id));
+        setModal(null);
+      }
+    });
+  }
+  function resetAll() {
+    setModal({
+      title: "Slet ALT data?",
+      message: "Dette sletter alle kortaftenener og kan ikke fortrydes.",
+      confirmLabel: "Slet alt",
+      confirmColor: "#e74c3c",
+      onConfirm: () => {
+        localStorage.removeItem(STORAGE_KEY);
+        setSessions([]);
+        setActive(null);
+        setModal(null);
+        setView("home");
+      }
+    });
+  }
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    setImportStatus(null);
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        setImportStatus({ error: "Import kr\xE6ver desktopversion." });
+        return;
+        const wb = null; if(false) {
+        const imported = parseExcelToSessions(wb);
+        if (!imported.length) {
+          setImportStatus({ error: "Ingen gyldige r\xE6kker fundet." });
+          return;
+        }
+        setModal({
+          title: `Importer ${imported.length} aftenener?`,
+          message: `Fandt ${imported.length} r\xE6kker.`,
+          confirmLabel: "Importer",
+          confirmColor: "#2c7a4b",
+          onConfirm: () => {
+            saveSessions([...sessions, ...imported].sort((a, b) => b.id - a.id));
+            setImportStatus({ ok: true, count: imported.length });
+            setModal(null);
+            setView("history");
+          }
+        });
+      } catch (err) {
+        setImportStatus({ error: "Fejl: " + err.message });
+      }
+    };
+    reader.readAsArrayBuffer(file);
+    e.target.value = "";
+  }
+  function roundPts(r) {
+    if (r.autoPoints) {
+      const auto = calcRoundPoints(r);
+      if (auto) return auto;
+    }
+    const t = {};
+    PLAYERS.forEach((p) => {
+      const v = parseInt(r.points[p]);
+      t[p] = isNaN(v) ? 0 : v;
+    });
+    return t;
+  }
+  function sessionTotals(sess) {
+    const t = {};
+    PLAYERS.forEach((p) => t[p] = 0);
+    sess.rounds.forEach((r) => {
+      const rp = roundPts(r);
+      PLAYERS.forEach((p) => t[p] += rp[p] || 0);
+    });
+    return t;
+  }
+  const allTotals = () => {
+    const t = {};
+    PLAYERS.forEach((p) => t[p] = 0);
+    sessions.forEach((s) => {
+      const st = sessionTotals(s);
+      PLAYERS.forEach((p) => t[p] += st[p]);
+    });
+    return t;
+  };
+  const rankings = () => {
+    const t = allTotals();
+    return PLAYERS.slice().sort((a, b) => t[b] - t[a]).map((p, i) => ({ name: p, total: t[p], rank: i + 1 }));
+  };
+  return /* @__PURE__ */ React.createElement("div", { style: S.root }, /* @__PURE__ */ React.createElement("style", null, `
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@300;400;700&display=swap');
+        *{box-sizing:border-box;margin:0;padding:0;}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+        @keyframes modalIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+        .btn:hover{opacity:.85;transform:scale(.98)}
+        input:focus{outline:none;border-color:#b5451b!important;box-shadow:0 0 0 2px rgba(181,69,27,.15)!important}
+      `), modal && /* @__PURE__ */ React.createElement(Modal, __spreadProps(__spreadValues({}, modal), { onCancel: () => setModal(null) })), showNewSessionModal && /* @__PURE__ */ React.createElement(NewSessionModal, { info: newSessionInfo, onChange: setNewSessionInfo, onConfirm: confirmStartSession, onCancel: () => setShowNewSessionModal(false) }), /* @__PURE__ */ React.createElement("input", { ref: fileRef, type: "file", accept: ".xlsx,.xls,.csv", style: { display: "none" }, onChange: handleFileChange }), /* @__PURE__ */ React.createElement("header", { style: S.header }, /* @__PURE__ */ React.createElement("div", { style: S.hInner }, /* @__PURE__ */ React.createElement("button", { style: S.logo, onClick: () => setView("home") }, "\u2660 WHIST"), /* @__PURE__ */ React.createElement("div", { style: S.hRight }, /* @__PURE__ */ React.createElement("span", { style: syncing ? S.syncBusy : S.syncOk }, syncing ? "\u25CF synkroniserer" : "\u2713 synkroniseret"), /* @__PURE__ */ React.createElement("nav", { style: S.nav }, [["home", "Hjem"], ["stats", "Statistik"], ["history", "Historik"]].map(([v, l]) => /* @__PURE__ */ React.createElement("button", { key: v, onClick: () => setView(v), style: __spreadProps(__spreadValues({}, S.navBtn), { borderBottom: view === v ? "2px solid #b5451b" : "2px solid transparent", color: view === v ? "#b5451b" : "#666", fontWeight: view === v ? 700 : 400 }) }, l)))))), /* @__PURE__ */ React.createElement("main", { style: S.main }, view === "home" && /* @__PURE__ */ React.createElement("div", { style: S.col }, /* @__PURE__ */ React.createElement("div", { style: S.hero }, /* @__PURE__ */ React.createElement("div", { style: S.heroBg }, "\u2660\u2665\u2666\u2663".split("").map((c) => /* @__PURE__ */ React.createElement("span", { key: c, style: S.heroBgChar }, c))), /* @__PURE__ */ React.createElement("div", { style: S.heroBody }, /* @__PURE__ */ React.createElement("p", { style: S.eyebrow }, "Kortaften \xB7 Whist"), /* @__PURE__ */ React.createElement("h1", { style: S.heroTitle }, "Hvem vinder", /* @__PURE__ */ React.createElement("br", null), "i aften?"), /* @__PURE__ */ React.createElement("p", { style: S.heroSub }, "Peter \xB7 Bj\xF8rn \xB7 Kirk \xB7 Wehner"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "8px" } }, active ? /* @__PURE__ */ React.createElement("button", { className: "btn", style: S.btnRed, onClick: () => setView("session") }, "Forts\xE6t igangv\xE6rende aften \u2192") : /* @__PURE__ */ React.createElement("button", { className: "btn", style: S.btnRed, onClick: startSession }, "Start ny kortaften"), /* @__PURE__ */ React.createElement("button", { className: "btn", style: S.btnOutline, onClick: () => xlsxLoaded ? fileRef.current.click() : null }, "\u2B06 Importer Excel")), importStatus && /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", fontSize: "13px", color: importStatus.ok ? "#2c7a4b" : "#b5451b", background: "rgba(255,255,255,.12)", padding: "8px 12px", borderRadius: "8px" } }, importStatus.ok ? `\u2713 ${importStatus.count} aftenener importeret!` : `\u26A0 ${importStatus.error}`))), pendingDownload && /* @__PURE__ */ React.createElement("div", { style: { background: "#2c7a4b", borderRadius: "14px", padding: "18px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { color: "#fff", fontWeight: 700, fontSize: "15px" } }, "\u2705 Kortaften gemt!"), /* @__PURE__ */ React.createElement("div", { style: { color: "rgba(255,255,255,.7)", fontSize: "13px", marginTop: "2px" } }, pendingDownload.filename)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px" } }, /* @__PURE__ */ React.createElement(
+    "a",
+    {
+      href: `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${pendingDownload.data}`,
+      download: pendingDownload.filename,
+      style: { background: "#fff", color: "#2c7a4b", borderRadius: "8px", padding: "10px 18px", fontSize: "14px", fontWeight: 700, textDecoration: "none", fontFamily: "'Lato',sans-serif" },
+      onClick: () => setPendingDownload(null)
+    },
+    "\u2B07 Download Excel"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setPendingDownload(null),
+      style: { background: "none", border: "1px solid rgba(255,255,255,.4)", color: "#fff", borderRadius: "8px", padding: "10px 14px", cursor: "pointer", fontSize: "13px" }
+    },
+    "\u2715"
+  ))), sessions.length > 0 && /* @__PURE__ */ React.createElement("div", { style: S.card }, /* @__PURE__ */ React.createElement("p", { style: S.cardLabel }, "Samlet rangliste"), rankings().map((r, i) => /* @__PURE__ */ React.createElement("div", { key: r.name, style: S.rankRow }, /* @__PURE__ */ React.createElement("span", { style: S.rankPos }, i === 0 ? "\u{1F451}" : i === 1 ? "\u{1F948}" : i === 2 ? "\u{1F949}" : `#${r.rank}`), /* @__PURE__ */ React.createElement("span", { style: S.rankName }, r.name), /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.rankPts), { color: r.total >= 0 ? "#2c7a4b" : "#b5451b" }) }, r.total > 0 ? "+" : "", r.total, " pt")))), /* @__PURE__ */ React.createElement("div", { style: S.importGuide }, /* @__PURE__ */ React.createElement("p", { style: S.importGuideTitle }, "\u{1F4CA} S\xE5dan importerer du dit regneark"), /* @__PURE__ */ React.createElement("p", { style: S.importGuideText }, "Kolonner skal hedde ", /* @__PURE__ */ React.createElement("strong", null, "Peter"), ", ", /* @__PURE__ */ React.createElement("strong", null, "Bj\xF8rn"), ", ", /* @__PURE__ */ React.createElement("strong", null, "Kirk"), ", ", /* @__PURE__ */ React.createElement("strong", null, "Wehner"), " \u2014 \xE9n r\xE6kke per kortaften. Eventuelt en ", /* @__PURE__ */ React.createElement("strong", null, "Dato"), "-kolonne."))), view === "session" && active && /* @__PURE__ */ React.createElement(
+    ActiveSession,
+    {
+      active,
+      sessionTotals,
+      roundPts,
+      updateRound,
+      removeRound,
+      collapseRound,
+      addRound,
+      finishSession
+    }
+  ), view === "history" && /* @__PURE__ */ React.createElement("div", { style: S.col }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "8px" } }, /* @__PURE__ */ React.createElement("h2", { style: S.pageTitle }, "Historik"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px" } }, /* @__PURE__ */ React.createElement("button", { className: "btn", style: __spreadProps(__spreadValues({}, S.btnOutline), { background: "#1a1a2e", fontSize: "13px", padding: "7px 14px" }), onClick: () => xlsxLoaded ? fileRef.current.click() : null }, "\u2B06 Importer Excel"), /* @__PURE__ */ React.createElement("button", { className: "btn", style: { background: "none", border: "1px solid #e74c3c", color: "#e74c3c", borderRadius: "8px", fontSize: "13px", padding: "7px 14px", cursor: "pointer", fontFamily: "'Lato',sans-serif" }, onClick: resetAll }, "\u{1F5D1} Nulstil alt"))), sessions.length === 0 ? /* @__PURE__ */ React.createElement("p", { style: S.empty }, "Ingen aftenener endnu.") : sessions.map((sess) => /* @__PURE__ */ React.createElement(SessionCard, { key: sess.id, session: sess, totals: sessionTotals(sess), onDelete: deleteSession }))), view === "stats" && /* @__PURE__ */ React.createElement(GlobalStats, { sessions, roundPtsFn: (r) => {
+    if (r.autoPoints) {
+      const a = calcRoundPoints(r);
+      if (a) return a;
+    }
+    const t = {};
+    PLAYERS.forEach((p) => {
+      const v = parseInt(r.points[p]);
+      t[p] = isNaN(v) ? 0 : v;
+    });
+    return t;
+  } })));
+}
+function ActiveSession({ active, sessionTotals, roundPts, updateRound, removeRound, collapseRound, addRound, finishSession }) {
+  const stats = calcSessionStats(active.rounds, roundPts);
+  const totals = sessionTotals(active);
+  return /* @__PURE__ */ React.createElement("div", { style: S.col }, /* @__PURE__ */ React.createElement("div", { style: S.sessTop }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("h2", { style: S.sessTitle }, "Kortaften"), /* @__PURE__ */ React.createElement("p", { style: S.sessDate }, active.date && !active.date.includes("S\xE6son") ? active.date : "")), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "right" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "13px", color: "#aaa" } }, active.season ? `S\xE6son ${active.season}, aften ${active.eveningNum}` : ""), active.date && !active.date.includes("S\xE6son") && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "12px", color: "#bbb" } }, active.date))), /* @__PURE__ */ React.createElement("div", { style: S.totalsRow }, PLAYERS.map((p) => {
+    const tot = totals[p];
+    return /* @__PURE__ */ React.createElement("div", { key: p, style: S.totalChip }, /* @__PURE__ */ React.createElement("span", { style: S.totalName }, p), /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.totalPts), { color: tot > 0 ? "#2c7a4b" : tot < 0 ? "#b5451b" : "#999" }) }, tot > 0 ? "+" : "", tot));
+  })), active.rounds.map((round, ri) => /* @__PURE__ */ React.createElement(
+    RoundCard,
+    {
+      key: round.id,
+      round,
+      roundIdx: ri,
+      onUpdate: (patch) => updateRound(ri, patch),
+      onRemove: () => removeRound(ri),
+      onCollapse: () => collapseRound(ri),
+      canRemove: active.rounds.length > 1,
+      calcPts: calcRoundPoints,
+      roundPts: roundPts(round)
+    }
+  )), /* @__PURE__ */ React.createElement("button", { className: "btn", style: S.addBtn, onClick: addRound }, "+ Tilf\xF8j runde"), /* @__PURE__ */ React.createElement(SessionStatsPanel, { stats, rounds: active.rounds }), /* @__PURE__ */ React.createElement("div", { style: S.finishBar }, /* @__PURE__ */ React.createElement("button", { className: "btn", style: S.btnFinish, onClick: finishSession }, "Afslut kortaften og gem resultater \u2713")));
+}
+function CollapsedRound({ round, roundIdx, pts, onExpand, onRemove, canRemove }) {
+  const gt = GAME_TYPES.find((g) => g.id === round.gameType);
+  const topPts = pts ? Object.entries(pts).sort((a, b) => b[1] - a[1]) : [null];
+  return /* @__PURE__ */ React.createElement("div", { style: S.collapsedCard, onClick: onExpand }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "10px", flex: 1, minWidth: 0 } }, /* @__PURE__ */ React.createElement("span", { style: S.collRoundNum }, "R", roundIdx + 1), /* @__PURE__ */ React.createElement("span", { style: S.collGtBadge }, gt ? `${gt.emoji} ${gt.label}` : "\u2014"), round.declarer && /* @__PURE__ */ React.createElement("span", { style: S.collDeclarer }, round.declarer, round.partner && round.partner !== "selv" ? ` & ${round.partner}` : round.partner === "selv" ? " (selv)" : "")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "6px" } }, pts && PLAYERS.map((p) => {
+    const v = pts[p];
+    return /* @__PURE__ */ React.createElement("span", { key: p, style: __spreadProps(__spreadValues({}, S.collPtChip), { color: v > 0 ? "#2c7a4b" : v < 0 ? "#b5451b" : "#999", background: v > 0 ? "#f0f9f4" : v < 0 ? "#fdf0ee" : "#f5f5f5" }) }, p.slice(0, 2), " ", v > 0 ? "+" : "", v);
+  }), /* @__PURE__ */ React.createElement("span", { style: S.expandHint }, "\u25BC"), canRemove && /* @__PURE__ */ React.createElement("button", { onClick: (e) => {
+    e.stopPropagation();
+    onRemove();
+  }, style: __spreadProps(__spreadValues({}, S.removeBtn), { fontSize: "13px" }) }, "\u2715")));
+}
+function SessionStatsPanel({ stats, rounds }) {
+  const { typeCounts, declarerCounts, declarerWins, totalRounds } = stats;
+  if (totalRounds === 0) return null;
+  const activeTypes = GAME_TYPES.filter((g) => typeCounts[g.id] > 0);
+  const maxCount = Math.max(...activeTypes.map((g) => typeCounts[g.id]), 1);
+  return /* @__PURE__ */ React.createElement("div", { style: S.statsPanel }, /* @__PURE__ */ React.createElement("p", { style: S.cardLabel }, "Aftenens statistik"), /* @__PURE__ */ React.createElement("p", { style: S.statSubhead }, "Spiltyper (", totalRounds, " runder)"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "6px", marginBottom: "18px" } }, activeTypes.map((g) => /* @__PURE__ */ React.createElement("div", { key: g.id, style: { display: "flex", alignItems: "center", gap: "10px" } }, /* @__PURE__ */ React.createElement("span", { style: { width: "110px", fontSize: "13px", fontWeight: 600, color: "#444", flexShrink: 0 } }, g.emoji, " ", g.label), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, background: "#f0ece3", borderRadius: "4px", height: "18px", overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { width: `${typeCounts[g.id] / maxCount * 100}%`, height: "100%", background: "#1a1a2e", borderRadius: "4px", transition: "width .4s ease" } })), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "13px", fontWeight: 700, color: "#1a1a2e", width: "24px", textAlign: "right" } }, typeCounts[g.id])))), /* @__PURE__ */ React.createElement("p", { style: S.statSubhead }, "Meldinger per spiller"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "18px" } }, PLAYERS.map((p) => {
+    const c = declarerCounts[p] || 0;
+    const w = declarerWins[p] || 0;
+    const pct = c > 0 ? Math.round(w / c * 100) : 0;
+    return /* @__PURE__ */ React.createElement("div", { key: p, style: S.statPlayerChip }, /* @__PURE__ */ React.createElement("span", { style: S.statPlayerName }, p), /* @__PURE__ */ React.createElement("span", { style: S.statPlayerBig }, c), /* @__PURE__ */ React.createElement("span", { style: S.statPlayerSub }, "meldinger"), c > 0 && /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.statPlayerPct), { color: pct >= 50 ? "#2c7a4b" : "#b5451b" }) }, pct, "% hjem"));
+  })), rounds.filter((r) => r.gameType && r.declarer).length > 0 && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("p", { style: S.statSubhead }, "Rundeoversigt"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "4px" } }, rounds.filter((r) => r.gameType && r.declarer).map((r, i) => {
+    const gt = GAME_TYPES.find((g) => g.id === r.gameType);
+    return /* @__PURE__ */ React.createElement("div", { key: r.id, style: { display: "flex", gap: "8px", alignItems: "center", fontSize: "13px", color: "#555", padding: "5px 0", borderBottom: "1px solid #f5f0e8" } }, /* @__PURE__ */ React.createElement("span", { style: { color: "#bbb", width: "20px", flexShrink: 0 } }, "#", i + 1), /* @__PURE__ */ React.createElement("span", { style: { width: "110px", flexShrink: 0 } }, gt ? `${gt.emoji} ${gt.label}` : "\u2014"), /* @__PURE__ */ React.createElement("span", { style: { flex: 1 } }, r.declarer, r.partner && r.partner !== "selv" ? ` & ${r.partner}` : r.partner === "selv" ? " (selvmakker)" : ""), r.bid && /* @__PURE__ */ React.createElement("span", { style: { color: "#888" } }, r.trump || "", " ", r.bid));
+  }))));
+}
+function GlobalStats({ sessions, roundPtsFn }) {
+  const allRounds = sessions.flatMap((s) => s.rounds).filter((r) => r.gameType && r.declarer);
+  const total = allRounds.length;
+  if (sessions.length === 0 || total === 0) return /* @__PURE__ */ React.createElement("div", { style: S.col }, /* @__PURE__ */ React.createElement("h2", { style: S.pageTitle }, "Statistik"), /* @__PURE__ */ React.createElement("p", { style: S.empty }, "Ingen data endnu. Spil en kortaften f\xF8rst!"));
+  const totals = {};
+  PLAYERS.forEach((p) => totals[p] = 0);
+  sessions.forEach((s) => {
+    s.rounds.forEach((r) => {
+      const pts = roundPtsFn(r);
+      PLAYERS.forEach((p) => {
+        var _a;
+        return totals[p] += pts ? (_a = pts[p]) != null ? _a : 0 : 0;
+      });
+    });
+  });
+  const ranked = PLAYERS.slice().sort((a, b) => totals[b] - totals[a]).map((p, i) => ({ name: p, total: totals[p], rank: i + 1 }));
+  const medals = ["\u{1F947}", "\u{1F948}", "\u{1F949}", "4\uFE0F\u20E3"];
+  const typeCounts = {};
+  GAME_TYPES.forEach((g) => typeCounts[g.id] = 0);
+  allRounds.forEach((r) => typeCounts[r.gameType] = (typeCounts[r.gameType] || 0) + 1);
+  const maxType = Math.max(...Object.values(typeCounts), 1);
+  const normName = (name) => {
+    if (!name || name === "selv") return null;
+    return PLAYERS.find((p) => p.toLowerCase() === name.toLowerCase()) || null;
+  };
+  const playerStats = {};
+  PLAYERS.forEach((p) => playerStats[p] = { declared: 0, won: 0, partner: 0, totalPts: totals[p], bestPts: -Infinity, worstPts: Infinity });
+  allRounds.forEach((r) => {
+    const dec = normName(r.declarer);
+    if (dec) {
+      playerStats[dec].declared++;
+      const pts = roundPtsFn(r);
+      if (pts && pts[dec] > 0) playerStats[dec].won++;
+      if (pts) {
+        playerStats[dec].bestPts = Math.max(playerStats[dec].bestPts, pts[dec]);
+        playerStats[dec].worstPts = Math.min(playerStats[dec].worstPts, pts[dec]);
+      }
+    }
+    const part = normName(r.partner);
+    if (part) playerStats[part].partner++;
+  });
+  const solRounds = allRounds.filter((r) => ["sol", "rensol", "bord"].includes(r.gameType));
+  const solWins = solRounds.filter((r) => {
+    const p = roundPtsFn(r);
+    return p && p[normName(r.declarer)] > 0;
+  }).length;
+  const partnerPairs = {};
+  allRounds.forEach((r) => {
+    const dec = normName(r.declarer);
+    const part = normName(r.partner);
+    if (dec && part) {
+      const key = [dec, part].sort().join(" & ");
+      partnerPairs[key] = (partnerPairs[key] || 0) + 1;
+    }
+  });
+  return /* @__PURE__ */ React.createElement("div", { style: S.col }, /* @__PURE__ */ React.createElement("h2", { style: S.pageTitle }, "Statistik"), /* @__PURE__ */ React.createElement("p", { style: S.pageSub }, sessions.length, " aftenener \xB7 ", total, " runder"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: "12px" } }, ranked.map((r, i) => {
+    const ps = playerStats[r.name];
+    const winPct = ps.declared > 0 ? Math.round(ps.won / ps.declared * 100) : 0;
+    return /* @__PURE__ */ React.createElement("div", { key: r.name, style: __spreadProps(__spreadValues({}, S.playerStatCard), { borderTop: `3px solid ${i === 0 ? "#f0b429" : i === 1 ? "#aaa" : i === 2 ? "#cd7f32" : "#ddd"}` }) }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "28px" } }, medals[i]), /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontWeight: 900, fontSize: "18px", fontFamily: "'Playfair Display',serif" } }, r.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "11px", color: "#aaa", letterSpacing: "1px", textTransform: "uppercase" } }, "Plads ", r.rank)), /* @__PURE__ */ React.createElement("div", { style: { marginLeft: "auto", textAlign: "right" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "26px", fontWeight: 900, fontFamily: "'Playfair Display',serif", color: r.total >= 0 ? "#2c7a4b" : "#b5451b" } }, r.total > 0 ? "+" : "", r.total), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "11px", color: "#bbb" } }, "point"))), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", borderTop: "1px solid #f0ece3", paddingTop: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: S.statCell }, /* @__PURE__ */ React.createElement("div", { style: S.statCellBig }, ps.declared), /* @__PURE__ */ React.createElement("div", { style: S.statCellLabel }, "meldinger")), /* @__PURE__ */ React.createElement("div", { style: S.statCell }, /* @__PURE__ */ React.createElement("div", { style: __spreadProps(__spreadValues({}, S.statCellBig), { color: winPct >= 50 ? "#2c7a4b" : "#b5451b" }) }, winPct, "%"), /* @__PURE__ */ React.createElement("div", { style: S.statCellLabel }, "hjem")), /* @__PURE__ */ React.createElement("div", { style: S.statCell }, /* @__PURE__ */ React.createElement("div", { style: S.statCellBig }, ps.partner), /* @__PURE__ */ React.createElement("div", { style: S.statCellLabel }, "som makker")), /* @__PURE__ */ React.createElement("div", { style: S.statCell }, /* @__PURE__ */ React.createElement("div", { style: __spreadProps(__spreadValues({}, S.statCellBig), { fontSize: "14px", color: "#2c7a4b" }) }, ps.bestPts > -Infinity ? "+" + ps.bestPts : "\u2014"), /* @__PURE__ */ React.createElement("div", { style: S.statCellLabel }, "bedste runde"))));
+  })), /* @__PURE__ */ React.createElement("div", { style: S.statsPanel }, /* @__PURE__ */ React.createElement("p", { style: S.cardLabel }, "Fordeling af spiltyper"), GAME_TYPES.filter((g) => typeCounts[g.id] > 0).map((g) => {
+    const pct = Math.round(typeCounts[g.id] / total * 100);
+    return /* @__PURE__ */ React.createElement("div", { key: g.id, style: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" } }, /* @__PURE__ */ React.createElement("span", { style: { width: "130px", fontSize: "14px", fontWeight: 600, flexShrink: 0 } }, g.emoji, " ", g.label), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, background: "#f0ece3", borderRadius: "6px", height: "20px", overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { width: `${pct}%`, height: "100%", background: "#1a1a2e", borderRadius: "6px", display: "flex", alignItems: "center", paddingLeft: "8px", transition: "width .5s ease" } }, pct > 12 && /* @__PURE__ */ React.createElement("span", { style: { fontSize: "11px", color: "rgba(255,255,255,.8)", fontWeight: 700 } }, pct, "%"))), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "14px", fontWeight: 700, width: "30px", textAlign: "right" } }, typeCounts[g.id]));
+  })), solRounds.length > 0 && /* @__PURE__ */ React.createElement("div", { style: S.statsPanel }, /* @__PURE__ */ React.createElement("p", { style: S.cardLabel }, "Sol-meldinger"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "12px", flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("div", { style: S.solStatBox }, /* @__PURE__ */ React.createElement("div", { style: S.solStatBig }, solRounds.length), /* @__PURE__ */ React.createElement("div", { style: S.solStatLabel }, "i alt")), /* @__PURE__ */ React.createElement("div", { style: S.solStatBox }, /* @__PURE__ */ React.createElement("div", { style: __spreadProps(__spreadValues({}, S.solStatBig), { color: "#2c7a4b" }) }, solWins), /* @__PURE__ */ React.createElement("div", { style: S.solStatLabel }, "hjem")), /* @__PURE__ */ React.createElement("div", { style: S.solStatBox }, /* @__PURE__ */ React.createElement("div", { style: __spreadProps(__spreadValues({}, S.solStatBig), { color: "#b5451b" }) }, solRounds.length - solWins), /* @__PURE__ */ React.createElement("div", { style: S.solStatLabel }, "ned")), ["sol", "rensol", "bord"].map((id) => {
+    const g = GAME_TYPES.find((x) => x.id === id);
+    const c = typeCounts[id];
+    if (!c) return null;
+    return /* @__PURE__ */ React.createElement("div", { key: id, style: S.solStatBox }, /* @__PURE__ */ React.createElement("div", { style: S.solStatBig }, c), /* @__PURE__ */ React.createElement("div", { style: S.solStatLabel }, g.emoji, " ", g.label));
+  }))), Object.keys(partnerPairs).length > 0 && /* @__PURE__ */ React.createElement("div", { style: S.statsPanel }, /* @__PURE__ */ React.createElement("p", { style: S.cardLabel }, "Hyppigste makkerpar"), Object.entries(partnerPairs).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([pair, count]) => /* @__PURE__ */ React.createElement("div", { key: pair, style: { display: "flex", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f5f0e8", fontSize: "14px" } }, /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 600 } }, "\u{1F91D} ", pair), /* @__PURE__ */ React.createElement("span", { style: { color: "#888" } }, count, " gang", count !== 1 ? "e" : "")))));
+}
+function OvertrickLabel({ taken, bid }) {
+  if (taken === "" || bid === "") return null;
+  const d = parseInt(taken) - parseInt(bid);
+  if (isNaN(d)) return null;
+  if (d > 0) return /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.bidLabel2), { color: "#2c7a4b" }) }, "+", d, " overtrick", d > 1 ? "s" : "");
+  if (d < 0) return /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.bidLabel2), { color: "#b5451b" }) }, d, " stik for lidt");
+  return /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.bidLabel2), { color: "#2c7a4b" }) }, "Pr\xE6cis hjem \u2713");
+}
+function SolCheck({ val, maxAllowed }) {
+  if (val === "" || val === void 0 || val === null) return null;
+  const ok = Number(val) <= maxAllowed;
+  return /* @__PURE__ */ React.createElement("span", { style: { fontSize: "18px" } }, ok ? "\u2705" : "\u274C");
+}
+function RoundCard({ round, roundIdx, onUpdate, onRemove, onCollapse, canRemove, calcPts, roundPts }) {
+  const gt = GAME_TYPES.find((g) => g.id === round.gameType);
+  const autoPts = round.autoPoints ? calcPts(round) : null;
+  const partnerOptions = round.declarer ? PLAYERS.filter((p) => p !== round.declarer) : [];
+  let stepN = 2;
+  const step = () => stepN++;
+  if (round.collapsed) {
+    return /* @__PURE__ */ React.createElement(
+      CollapsedRound,
+      {
+        round,
+        roundIdx,
+        pts: roundPts,
+        onExpand: () => onUpdate({ collapsed: false }),
+        onRemove,
+        canRemove
+      }
+    );
+  }
+  return /* @__PURE__ */ React.createElement("div", { style: S.roundCard }, /* @__PURE__ */ React.createElement("div", { style: S.roundHead }, /* @__PURE__ */ React.createElement("span", { style: S.roundLabel }, "Runde ", roundIdx + 1), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", alignItems: "center" } }, gt && /* @__PURE__ */ React.createElement("span", { style: S.gtBadge }, gt.emoji, " ", gt.label), /* @__PURE__ */ React.createElement("button", { onClick: onCollapse, style: S.collapseBtn, title: "Fold sammen" }, "\u25B2"), canRemove && /* @__PURE__ */ React.createElement("button", { onClick: onRemove, style: S.removeBtn }, "\u2715"))), /* @__PURE__ */ React.createElement(Section, { title: "1. Spiltype" }, /* @__PURE__ */ React.createElement("div", { style: S.gtGrid }, GAME_TYPES.map((g) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: g.id,
+      onClick: () => onUpdate({ gameType: g.id, partner: null, trump: null, bid: "", taken: "", solTaken: {}, coDeclarers: [] }),
+      style: __spreadValues(__spreadValues({}, S.gtBtn), round.gameType === g.id ? S.gtBtnActive : {})
+    },
+    /* @__PURE__ */ React.createElement("span", { style: S.gtEmoji }, g.emoji),
+    /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.gtBtnLabel), { color: round.gameType === g.id ? "#fff" : "#1a1a1a" }) }, g.label),
+    /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.gtBtnDesc), { color: round.gameType === g.id ? "rgba(255,255,255,.65)" : "#999" }) }, g.description)
+  )))), gt && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement(Section, { title: "2. Melder" }, /* @__PURE__ */ React.createElement("div", { style: S.chipRow }, PLAYERS.map((p) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: p,
+      onClick: () => onUpdate({ declarer: p, partner: null, coDeclarers: [] }),
+      style: __spreadValues(__spreadValues({}, S.chip), round.declarer === p ? S.chipActive : {})
+    },
+    p
+  )))), gt.hasPartner && round.declarer && /* @__PURE__ */ React.createElement(Section, { title: `${step()}. Makker` }, /* @__PURE__ */ React.createElement("div", { style: S.chipRow }, /* @__PURE__ */ React.createElement("button", { onClick: () => onUpdate({ partner: "selv" }), style: __spreadValues(__spreadValues({}, S.chip), round.partner === "selv" ? S.chipSelf : {}) }, "Selvmakker"), partnerOptions.map((p) => /* @__PURE__ */ React.createElement("button", { key: p, onClick: () => onUpdate({ partner: p }), style: __spreadValues(__spreadValues({}, S.chip), round.partner === p ? S.chipActive : {}) }, p))), round.partner && round.partner !== "selv" && /* @__PURE__ */ React.createElement("p", { style: S.infoLine }, /* @__PURE__ */ React.createElement("strong", null, round.declarer), " & ", /* @__PURE__ */ React.createElement("strong", null, round.partner), " mod ", /* @__PURE__ */ React.createElement("strong", null, PLAYERS.filter((p) => p !== round.declarer && p !== round.partner).join(" & "))), round.partner === "selv" && /* @__PURE__ */ React.createElement("p", { style: S.infoLine }, /* @__PURE__ */ React.createElement("strong", null, round.declarer), " spiller selvmakker")), gt.solType && round.declarer && /* @__PURE__ */ React.createElement(Section, { title: `${step()}. G\xE5r nogen med?` }, /* @__PURE__ */ React.createElement("div", { style: S.chipRow }, PLAYERS.filter((p) => p !== round.declarer).map((p) => {
+    const co = round.coDeclarers || [];
+    const isActive = co.includes(p);
+    return /* @__PURE__ */ React.createElement("button", { key: p, onClick: () => {
+      const co2 = round.coDeclarers || [];
+      onUpdate({ coDeclarers: isActive ? co2.filter((x) => x !== p) : [...co2, p] });
+    }, style: __spreadValues(__spreadValues({}, S.chip), isActive ? S.chipActive : {}) }, p);
+  }), /* @__PURE__ */ React.createElement("button", { onClick: () => onUpdate({ coDeclarers: [] }), style: __spreadProps(__spreadValues({}, S.chip), { color: "#aaa", fontSize: "12px" }) }, "Ingen med"))), gt.hasTrump && /* @__PURE__ */ React.createElement(Section, { title: `${step()}. Trumf ${gt.id === "halve" ? "(makker v\xE6lger)" : "(melder v\xE6lger)"}` }, /* @__PURE__ */ React.createElement("div", { style: S.chipRow }, SUITS.map((suit) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: suit,
+      onClick: () => onUpdate({ trump: suit }),
+      style: __spreadProps(__spreadValues({}, S.suitChip), { background: round.trump === suit ? SUIT_COLOR[suit] : "#fff", color: round.trump === suit ? "#fff" : SUIT_COLOR[suit], borderColor: round.trump === suit ? SUIT_COLOR[suit] : "#ddd" })
+    },
+    suit,
+    " ",
+    SUIT_LABEL[suit]
+  ))), gt.id === "halve" && round.trump && /* @__PURE__ */ React.createElement("p", { style: S.infoLine }, round.trump === "\u2663" ? "\u2663 Kl\xF8r \u2014 t\xE6ller som Halve Gode" : `${round.trump} ${SUIT_LABEL[round.trump]} \u2014 t\xE6ller som Halve (Gode-point)`)), gt.id === "gode" && /* @__PURE__ */ React.createElement(Section, { title: `${step()}. Trumf` }, /* @__PURE__ */ React.createElement("div", { style: __spreadProps(__spreadValues({}, S.infoBox), { borderColor: "#1a3a1a", background: "#f0f9f0" }) }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "20px" } }, "\u2663"), /* @__PURE__ */ React.createElement("span", { style: { color: "#1a3a1a", fontWeight: 700 } }, "Kl\xF8r er altid trumf ved Gode"))), !gt.solType && /* @__PURE__ */ React.createElement(Section, { title: `${step()}. Antal stik meldt` }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("input", { type: "number", min: "8", max: "13", value: round.bid, onChange: (e) => onUpdate({ bid: e.target.value }), style: S.bidInput, placeholder: "8\u201313" }), round.bid !== "" && /* @__PURE__ */ React.createElement("span", { style: S.bidLabel2 }, round.trump || "?", " ", round.bid, " stik", round.partner === "selv" ? " (selvmakker)" : round.partner ? ` \u2014 ${round.declarer} & ${round.partner}` : ""))), !gt.solType && round.bid !== "" && /* @__PURE__ */ React.createElement(Section, { title: `${step()}. Stik taget (melderside)` }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("input", { type: "number", min: "0", max: "13", value: round.taken, onChange: (e) => onUpdate({ taken: e.target.value }), style: S.bidInput, placeholder: "0\u201313" }), /* @__PURE__ */ React.createElement(OvertrickLabel, { taken: round.taken, bid: round.bid }))), gt.solType && round.declarer && /* @__PURE__ */ React.createElement(Section, { title: `${step()}. Stik taget` }, /* @__PURE__ */ React.createElement("div", { style: S.pointsGrid }, [round.declarer, ...round.coDeclarers || []].map((p) => {
+    var _a;
+    return /* @__PURE__ */ React.createElement("div", { key: p, style: __spreadProps(__spreadValues({}, S.pointRow), { background: "#fdf6f0", borderLeft: "3px solid #b5451b" }) }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: S.pointPlayer }, p), /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.roleTag), { color: "#b5451b", borderColor: "#b5451b" }) }, gt.label)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "10px" } }, /* @__PURE__ */ React.createElement("input", { type: "number", min: "0", max: "13", value: (_a = (round.solTaken || {})[p]) != null ? _a : "", onChange: (e) => onUpdate({ solTaken: __spreadProps(__spreadValues({}, round.solTaken || {}), { [p]: e.target.value }) }), style: S.ptInput, placeholder: "0" }), /* @__PURE__ */ React.createElement(SolCheck, { val: (round.solTaken || {})[p], maxAllowed: round.gameType === "sol" ? 1 : 0 })));
+  }))), autoPts && /* @__PURE__ */ React.createElement(Section, { title: `${step()}. Beregnet point` }, /* @__PURE__ */ React.createElement("div", { style: S.pointsGrid }, PLAYERS.map((p) => {
+    var _a;
+    const isDec = p === round.declarer;
+    const isCo = (round.coDeclarers || []).includes(p);
+    const isPart = round.partner && round.partner !== "selv" && p === round.partner;
+    const isSelf = round.partner === "selv" && isDec;
+    const val = (_a = autoPts[p]) != null ? _a : 0;
+    let role = isDec && gt.solType ? gt.label : isCo ? "Med p\xE5 " + gt.label : isDec ? "Melder" : isSelf ? "Selvmakker" : isPart ? "Makker" : "Modspiller";
+    return /* @__PURE__ */ React.createElement("div", { key: p, style: __spreadProps(__spreadValues({}, S.pointRow), { background: isDec || isSelf || isCo ? "#fdf6f0" : isPart ? "#f0f9f4" : "#fafafa", borderLeft: isDec || isSelf || isCo ? "3px solid #b5451b" : isPart ? "3px solid #2c7a4b" : "3px solid #eee" }) }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("span", { style: S.pointPlayer }, p), /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.roleTag), { color: isDec || isSelf || isCo ? "#b5451b" : isPart ? "#2c7a4b" : "#999", borderColor: isDec || isSelf || isCo ? "#b5451b" : isPart ? "#2c7a4b" : "#ddd" }) }, role)), /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.ptBadge), { color: val > 0 ? "#2c7a4b" : val < 0 ? "#b5451b" : "#999", fontSize: "20px" }) }, val > 0 ? "+" : "", val, " pt"));
+  })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", marginTop: "12px", flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("button", { onClick: onCollapse, style: S.doneBtn }, "Runde f\xE6rdig \u2713"), /* @__PURE__ */ React.createElement("button", { onClick: () => onUpdate({ autoPoints: false, points: Object.fromEntries(PLAYERS.map((p) => {
+    var _a;
+    return [p, String((_a = autoPts[p]) != null ? _a : "")];
+  })) }), style: S.manualBtn }, "Ret manuelt"))), !round.autoPoints && /* @__PURE__ */ React.createElement(Section, { title: `${step()}. Point (manuelt)` }, /* @__PURE__ */ React.createElement("p", { style: S.hint }, "Rediger point manuelt. Brug minus for negative (f.eks. -40)"), /* @__PURE__ */ React.createElement("div", { style: S.pointsGrid }, PLAYERS.map((p) => {
+    const val = parseInt(round.points[p]);
+    const hasVal = !isNaN(val);
+    return /* @__PURE__ */ React.createElement("div", { key: p, style: __spreadProps(__spreadValues({}, S.pointRow), { background: "#fafafa", borderLeft: "3px solid #eee" }) }, /* @__PURE__ */ React.createElement("span", { style: S.pointPlayer }, p), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "10px" } }, /* @__PURE__ */ React.createElement("input", { type: "number", value: round.points[p], onChange: (e) => onUpdate({ points: __spreadProps(__spreadValues({}, round.points), { [p]: e.target.value }) }), style: S.ptInput, placeholder: "0" }), hasVal && /* @__PURE__ */ React.createElement("span", { style: __spreadProps(__spreadValues({}, S.ptBadge), { color: val >= 0 ? "#2c7a4b" : "#b5451b" }) }, val > 0 ? "+" : "", val, " pt")));
+  })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", marginTop: "12px", flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("button", { onClick: onCollapse, style: S.doneBtn }, "Runde f\xE6rdig \u2713"), /* @__PURE__ */ React.createElement("button", { onClick: () => onUpdate({ autoPoints: true }), style: S.manualBtn }, "\u2190 Brug automatisk")))));
+}
+function Section({ title, children }) {
+  return /* @__PURE__ */ React.createElement("div", { style: S.section }, /* @__PURE__ */ React.createElement("p", { style: S.sectionTitle }, title), children);
+}
+function SessionCard({ session, totals, onDelete }) {
+  const [open, setOpen] = useState(false);
+  const winner = PLAYERS.slice().sort((a, b) => totals[b] - totals[a])[0];
+  return /* @__PURE__ */ React.createElement("div", { style: S.histCard }, /* @__PURE__ */ React.createElement("div", { style: S.histTop, onClick: () => setOpen((o) => !o) }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: S.histDate }, session.season ? `S\xE6son ${session.season}, aften ${session.eveningNum}` : session.date, session.season && session.date && !session.date.includes("S\xE6son") ? ` \xB7 ${session.date}` : "", "\xA0", session.imported && /* @__PURE__ */ React.createElement("span", { style: S.importedTag }, "importeret")), /* @__PURE__ */ React.createElement("div", { style: S.histWinner }, "\u{1F3C6} ", winner, " vandt \xB7 ", session.rounds.length, " ", session.rounds.length === 1 ? "runde" : "runder")), /* @__PURE__ */ React.createElement("span", { style: S.histToggle }, open ? "\u25B2" : "\u25BC")), open && /* @__PURE__ */ React.createElement("div", { style: S.histBody }, PLAYERS.map((p) => /* @__PURE__ */ React.createElement("div", { key: p, style: S.histRow }, /* @__PURE__ */ React.createElement("span", null, p), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 700, color: totals[p] >= 0 ? "#2c7a4b" : "#b5451b" } }, totals[p] > 0 ? "+" : "", totals[p], " pt"))), /* @__PURE__ */ React.createElement("button", { style: S.deleteBtn, onClick: () => onDelete(session.id) }, "Slet aften")));
+}
+const S = {
+  root: { minHeight: "100vh", background: "#f6f3ee", fontFamily: "'Lato',sans-serif", color: "#1a1a1a" },
+  header: { background: "#fff", borderBottom: "1px solid #e5ddd0", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 10px rgba(0,0,0,.05)" },
+  hInner: { maxWidth: 820, margin: "0 auto", padding: "12px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" },
+  logo: { background: "none", border: "none", fontSize: "19px", fontWeight: 900, fontFamily: "'Playfair Display',serif", cursor: "pointer", color: "#1a1a2e", letterSpacing: "3px" },
+  hRight: { display: "flex", alignItems: "center", gap: "12px" },
+  syncBusy: { fontSize: "11px", color: "#bbb", animation: "pulse 1.2s infinite" },
+  syncOk: { fontSize: "11px", color: "#2c7a4b" },
+  nav: { display: "flex" },
+  navBtn: { background: "none", border: "none", borderBottom: "2px solid transparent", padding: "6px 10px", cursor: "pointer", fontSize: "13px", fontFamily: "'Lato',sans-serif", transition: "all .15s" },
+  main: { maxWidth: 820, margin: "0 auto", padding: "28px 16px 80px" },
+  col: { display: "flex", flexDirection: "column", gap: "18px" },
+  hero: { background: "#1a1a2e", borderRadius: "18px", overflow: "hidden", position: "relative", minHeight: "240px" },
+  heroBg: { position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "space-around", pointerEvents: "none" },
+  heroBgChar: { fontSize: "160px", opacity: 0.05, fontFamily: "'Playfair Display',serif", userSelect: "none" },
+  heroBody: { position: "relative", zIndex: 1, padding: "44px 36px", display: "flex", flexDirection: "column", gap: "10px" },
+  eyebrow: { fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", color: "#778", fontWeight: 700 },
+  heroTitle: { fontFamily: "'Playfair Display',serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 900, color: "#fff", lineHeight: 1.15 },
+  heroSub: { fontSize: "13px", color: "#667", letterSpacing: "1px" },
+  btnRed: { background: "#b5451b", color: "#fff", border: "none", borderRadius: "8px", padding: "12px 24px", fontSize: "14px", fontFamily: "'Lato',sans-serif", fontWeight: 700, cursor: "pointer" },
+  btnOutline: { background: "rgba(255,255,255,.12)", color: "#fff", border: "1px solid rgba(255,255,255,.3)", borderRadius: "8px", padding: "12px 20px", fontSize: "14px", fontFamily: "'Lato',sans-serif", fontWeight: 700, cursor: "pointer" },
+  btnGreen: { background: "#2c7a4b", color: "#fff", border: "none", borderRadius: "8px", padding: "11px 20px", cursor: "pointer", fontWeight: 700, fontSize: "14px", fontFamily: "'Lato',sans-serif" },
+  card: { background: "#fff", borderRadius: "14px", padding: "22px", border: "1px solid #e5ddd0", animation: "fadeUp .3s ease" },
+  cardLabel: { fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase", color: "#bbb", fontWeight: 700, marginBottom: "14px" },
+  rankRow: { display: "flex", alignItems: "center", gap: "12px", padding: "9px 0", borderBottom: "1px solid #f5f0e8" },
+  rankPos: { fontSize: "18px", width: "30px", textAlign: "center" },
+  rankName: { flex: 1, fontWeight: 700, fontSize: "15px" },
+  rankPts: { fontWeight: 700, fontSize: "15px" },
+  importGuide: { background: "#fff", borderRadius: "14px", padding: "20px 22px", border: "1px dashed #d0c8ba" },
+  importGuideTitle: { fontWeight: 700, fontSize: "14px", marginBottom: "8px", color: "#444" },
+  importGuideText: { fontSize: "13px", color: "#777", lineHeight: 1.6 },
+  sessTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px" },
+  sessTitle: { fontFamily: "'Playfair Display',serif", fontSize: "26px", fontWeight: 700 },
+  sessDate: { fontSize: "13px", color: "#999", marginTop: "3px", textTransform: "capitalize" },
+  totalsRow: { display: "flex", gap: "8px", flexWrap: "wrap" },
+  totalChip: { flex: "1 1 80px", background: "#fff", border: "1px solid #e5ddd0", borderRadius: "10px", padding: "10px 8px", textAlign: "center" },
+  totalName: { display: "block", fontSize: "10px", color: "#bbb", marginBottom: "3px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase" },
+  totalPts: { display: "block", fontSize: "20px", fontWeight: 900, fontFamily: "'Playfair Display',serif" },
+  // Collapsed round
+  collapsedCard: { background: "#fff", border: "1px solid #e5ddd0", borderRadius: "10px", padding: "10px 16px", display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", transition: "background .15s" },
+  collRoundNum: { fontSize: "11px", fontWeight: 700, color: "#aaa", letterSpacing: "1px", flexShrink: 0 },
+  collGtBadge: { fontSize: "13px", background: "#f2ece3", borderRadius: "20px", padding: "3px 10px", color: "#555", fontWeight: 600, flexShrink: 0 },
+  collDeclarer: { fontSize: "13px", color: "#777", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
+  collPtChip: { fontSize: "11px", fontWeight: 700, padding: "2px 6px", borderRadius: "6px" },
+  expandHint: { fontSize: "12px", color: "#bbb", marginLeft: "4px" },
+  // Round card
+  roundCard: { background: "#fff", borderRadius: "14px", border: "1px solid #e5ddd0", overflow: "hidden", animation: "fadeUp .25s ease" },
+  roundHead: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "13px 20px", background: "#f2ece3", borderBottom: "1px solid #e5ddd0" },
+  roundLabel: { fontWeight: 700, fontSize: "13px", letterSpacing: "2px", textTransform: "uppercase", color: "#666" },
+  gtBadge: { fontSize: "13px", background: "#fff", border: "1px solid #ddd", borderRadius: "20px", padding: "3px 10px", color: "#444" },
+  collapseBtn: { background: "none", border: "1px solid #ddd", borderRadius: "6px", cursor: "pointer", color: "#888", fontSize: "12px", padding: "3px 8px" },
+  removeBtn: { background: "none", border: "none", cursor: "pointer", color: "#b5451b", fontSize: "15px", padding: "4px 8px" },
+  section: { padding: "16px 20px", borderBottom: "1px solid #f2ece3" },
+  sectionTitle: { fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "#bbb", marginBottom: "12px" },
+  gtGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(190px,1fr))", gap: "8px" },
+  gtBtn: { display: "flex", flexDirection: "column", gap: "3px", padding: "12px 14px", border: "1px solid #e0d8cc", borderRadius: "10px", background: "#faf8f5", cursor: "pointer", textAlign: "left", transition: "all .15s", fontFamily: "'Lato',sans-serif" },
+  gtBtnActive: { background: "#1a1a2e", borderColor: "#1a1a2e" },
+  gtEmoji: { fontSize: "20px" },
+  gtBtnLabel: { fontSize: "14px", fontWeight: 700 },
+  gtBtnDesc: { fontSize: "11px", lineHeight: 1.3 },
+  chipRow: { display: "flex", flexWrap: "wrap", gap: "8px" },
+  chip: { background: "#fff", border: "1px solid #ddd", borderRadius: "20px", padding: "7px 16px", fontSize: "14px", cursor: "pointer", fontFamily: "'Lato',sans-serif", transition: "all .15s", color: "#444" },
+  chipActive: { background: "#1a1a2e", borderColor: "#1a1a2e", color: "#fff", fontWeight: 700 },
+  chipSelf: { background: "#7c3aed", borderColor: "#7c3aed", color: "#fff", fontWeight: 700 },
+  suitChip: { border: "1px solid #ddd", borderRadius: "8px", padding: "8px 14px", fontSize: "15px", cursor: "pointer", fontFamily: "'Lato',sans-serif", fontWeight: 700, transition: "all .15s", display: "flex", gap: "5px", alignItems: "center" },
+  infoLine: { marginTop: "10px", fontSize: "13px", color: "#555", lineHeight: 1.5 },
+  infoBox: { display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", border: "1px solid #ddd", borderRadius: "8px", fontSize: "14px" },
+  hint: { fontSize: "12px", color: "#bbb", marginBottom: "10px" },
+  bidInput: { border: "1px solid #ddd", borderRadius: "8px", padding: "10px 14px", fontSize: "20px", fontFamily: "'Playfair Display',serif", fontWeight: 700, width: "90px", textAlign: "center", background: "#faf8f5" },
+  bidLabel2: { fontSize: "15px", fontWeight: 700, color: "#1a1a2e", fontFamily: "'Playfair Display',serif" },
+  pointsGrid: { display: "flex", flexDirection: "column", gap: "8px" },
+  pointRow: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", borderRadius: "10px", borderLeft: "3px solid #eee" },
+  pointPlayer: { fontWeight: 700, fontSize: "15px", marginRight: "8px" },
+  roleTag: { fontSize: "10px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", border: "1px solid", borderRadius: "10px", padding: "2px 7px", verticalAlign: "middle" },
+  ptInput: { border: "1px solid #ddd", borderRadius: "7px", padding: "8px 10px", fontSize: "17px", fontFamily: "'Playfair Display',serif", fontWeight: 700, width: "72px", textAlign: "center", background: "#fff" },
+  ptBadge: { fontWeight: 900, fontFamily: "'Playfair Display',serif", minWidth: "48px" },
+  doneBtn: { background: "#2c7a4b", color: "#fff", border: "none", borderRadius: "8px", padding: "10px 20px", cursor: "pointer", fontWeight: 700, fontSize: "14px", fontFamily: "'Lato',sans-serif" },
+  manualBtn: { background: "none", border: "1px solid #ddd", borderRadius: "8px", padding: "9px 16px", cursor: "pointer", fontSize: "13px", color: "#888", fontFamily: "'Lato',sans-serif" },
+  addBtn: { background: "#fff", border: "2px dashed #b5451b", borderRadius: "10px", color: "#b5451b", padding: "15px", fontSize: "15px", cursor: "pointer", fontFamily: "'Lato',sans-serif", fontWeight: 700, width: "100%" },
+  // Finish bar
+  finishBar: { background: "#fff", borderRadius: "14px", border: "2px solid #2c7a4b", padding: "20px", textAlign: "center" },
+  btnFinish: { background: "#2c7a4b", color: "#fff", border: "none", borderRadius: "10px", padding: "15px 32px", fontSize: "16px", fontFamily: "'Playfair Display',serif", fontWeight: 700, cursor: "pointer", width: "100%", maxWidth: "400px" },
+  // Stats panel
+  statsPanel: { background: "#fff", borderRadius: "14px", padding: "22px", border: "1px solid #e5ddd0" },
+  statSubhead: { fontSize: "12px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: "#aaa", marginBottom: "10px" },
+  statPlayerChip: { background: "#f6f3ee", borderRadius: "12px", padding: "14px 16px", flex: "1 1 100px", textAlign: "center", minWidth: "100px" },
+  statPlayerName: { display: "block", fontSize: "13px", fontWeight: 700, color: "#444", marginBottom: "4px" },
+  statPlayerBig: { display: "block", fontSize: "28px", fontWeight: 900, fontFamily: "'Playfair Display',serif", color: "#1a1a2e" },
+  statPlayerSub: { display: "block", fontSize: "11px", color: "#bbb", marginBottom: "4px" },
+  statPlayerPct: { display: "block", fontSize: "12px", fontWeight: 700, marginTop: "2px" },
+  deepStatCard: { background: "#f6f3ee", borderRadius: "12px", padding: "16px", display: "flex", flexDirection: "column", gap: "5px" },
+  deepStatName: { fontWeight: 700, fontSize: "15px", color: "#1a1a2e", marginBottom: "2px" },
+  deepStatBig: { fontSize: "32px", fontWeight: 900, fontFamily: "'Playfair Display',serif", color: "#1a1a2e", lineHeight: 1 },
+  deepStatLabel: { fontSize: "11px", color: "#bbb", marginBottom: "4px" },
+  deepStatPct: { fontSize: "13px", fontWeight: 700 },
+  deepStatDivider: { height: "1px", background: "#e5ddd0", margin: "6px 0" },
+  deepStatRow: { display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#666" },
+  solStatBox: { background: "#f6f3ee", borderRadius: "10px", padding: "14px 18px", textAlign: "center", flex: "1 1 80px" },
+  solStatBig: { fontSize: "28px", fontWeight: 900, fontFamily: "'Playfair Display',serif", color: "#1a1a2e" },
+  solStatLabel: { fontSize: "11px", color: "#888", marginTop: "2px" },
+  pageTitle: { fontFamily: "'Playfair Display',serif", fontSize: "30px", fontWeight: 900, color: "#1a1a2e" },
+  pageSub: { fontSize: "13px", color: "#bbb", marginTop: "4px" },
+  bigRankCard: { background: "#fff", border: "1px solid #e5ddd0", borderRadius: "14px", padding: "20px 24px", display: "flex", alignItems: "center", gap: "16px", animation: "fadeUp .3s ease both" },
+  bigMedal: { fontSize: "30px", width: "40px", textAlign: "center" },
+  bigName: { fontWeight: 700, fontSize: "18px" },
+  bigSub: { fontSize: "12px", color: "#bbb", marginTop: "3px" },
+  bigTotal: { fontSize: "26px", fontWeight: 900, fontFamily: "'Playfair Display',serif" },
+  ptLabel: { fontSize: "14px", color: "#bbb", fontWeight: 400 },
+  histCard: { background: "#fff", border: "1px solid #e5ddd0", borderRadius: "14px", overflow: "hidden" },
+  histTop: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 24px", cursor: "pointer" },
+  histDate: { fontWeight: 700, fontSize: "15px", textTransform: "capitalize" },
+  histWinner: { fontSize: "13px", color: "#999", marginTop: "3px" },
+  histToggle: { color: "#bbb", fontSize: "13px" },
+  histBody: { padding: "0 24px 20px", borderTop: "1px solid #f2ece3" },
+  histRow: { display: "flex", justifyContent: "space-between", fontSize: "15px", padding: "8px 0", borderBottom: "1px solid #f7f4ef", color: "#444" },
+  deleteBtn: { marginTop: "14px", background: "none", border: "1px solid #e74c3c", color: "#e74c3c", borderRadius: "6px", padding: "8px 16px", cursor: "pointer", fontSize: "13px", fontFamily: "'Lato',sans-serif" },
+  importedTag: { fontSize: "10px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", background: "#e8f5e9", color: "#2c7a4b", borderRadius: "10px", padding: "2px 7px", marginLeft: "8px", verticalAlign: "middle" },
+  playerStatCard: { background: "#fff", borderRadius: "14px", padding: "18px 20px", border: "1px solid #e5ddd0" },
+  statCell: { background: "#f6f3ee", borderRadius: "8px", padding: "8px 10px", textAlign: "center" },
+  statCellBig: { fontSize: "18px", fontWeight: 900, fontFamily: "'Playfair Display',serif", color: "#1a1a2e" },
+  statCellLabel: { fontSize: "10px", color: "#bbb", marginTop: "2px", textTransform: "uppercase", letterSpacing: "1px" },
+  empty: { color: "#bbb", fontStyle: "italic", textAlign: "center", marginTop: "40px" },
+  modalOverlay: { position: "fixed", inset: 0, background: "rgba(0,0,0,.5)", zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" },
+  modalBox: { background: "#fff", borderRadius: "16px", padding: "32px 28px", maxWidth: "400px", width: "100%", animation: "modalIn .2s ease", boxShadow: "0 20px 60px rgba(0,0,0,.2)" },
+  modalTitle: { fontFamily: "'Playfair Display',serif", fontSize: "20px", fontWeight: 700, marginBottom: "10px", color: "#1a1a2e" },
+  modalMsg: { fontSize: "14px", color: "#666", lineHeight: 1.6, marginBottom: "24px" },
+  modalBtns: { display: "flex", gap: "10px", justifyContent: "flex-end" },
+  modalCancel: { background: "none", border: "1px solid #ddd", borderRadius: "8px", padding: "10px 20px", cursor: "pointer", fontSize: "14px", fontFamily: "'Lato',sans-serif", color: "#666" },
+  modalConfirm: { border: "none", borderRadius: "8px", padding: "10px 22px", cursor: "pointer", fontSize: "14px", fontFamily: "'Lato',sans-serif", fontWeight: 700, color: "#fff" }
+};
+
+```
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+```
+
+  </script>
+</body>
+</html>
